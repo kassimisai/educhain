@@ -1,4 +1,3 @@
-
 # 📘 Educhain Cookbook Repository
 
 Welcome to the **Educhain Cookbook Repository**! Your one-stop resource for creating quizzes, study guides, and more using AI. Below is a quick-access table to navigate through the categories. 👇
@@ -15,6 +14,7 @@ Welcome to the **Educhain Cookbook Repository**! Your one-stop resource for crea
 | 🌟 **Starters**          | Beginner-friendly guides to get started. | [Explore Starters](#starters)      |
 | 🛡️ **Providers**         | AI model integrations.                  | [Explore Providers](#providers)    |
 | ⚡ **World’s Fastest Quiz** | Test Educhain’s speed with this notebook. | [Explore World's Fastest Quiz](#worlds-fastest-quiz) |
+| 📹 **LiveKit Integration** | Video and audio streaming in classrooms. | [Explore LiveKit Integration](#livekit-integration) |
 
 ---
 
@@ -64,6 +64,12 @@ Experience the speed of Educhain:
 
 ---
 
+## 📹 LiveKit Integration
+Enhance your classroom experience with video and audio streaming:
+- [LiveKit SDK Integration](livekit_integration/livekit_sdk_integration.ipynb)
+
+---
+
 ## 🚀 Getting Started
 
 1. Clone the repository:
@@ -84,17 +90,50 @@ Experience the speed of Educhain:
 - **Custom Flashcards and Study Guides**: Tools tailored for personalized learning.
 - **Fast and Efficient**: World’s fastest quiz generation engine included.
 - **AI Integration**: Seamless integration with Claude 3.5 Sonnet and more.
+- **LiveKit Integration**: Video and audio streaming in classrooms.
 
+---
 
+## 📹 LiveKit SDK Integration Example
+
+LiveKit SDK allows for seamless video and audio streaming in classrooms. Here's a brief example of how to use the LiveKit SDK in your classroom application:
+
+```python
+from livekit import Room, LocalParticipant, RemoteParticipant
+
+# Initialize LiveKit Room
+room = Room(url="your_livekit_server_url", token="your_access_token")
+
+# Join the room
+local_participant = room.join()
+
+# Handle remote participants
+def on_participant_connected(participant: RemoteParticipant):
+    print(f"Participant {participant.identity} connected")
+
+room.on("participantConnected", on_participant_connected)
+
+# Publish local video and audio tracks
+local_participant.publish_video_track("path_to_video_file")
+local_participant.publish_audio_track("path_to_audio_file")
+
+# Subscribe to remote tracks
+def on_track_subscribed(track, publication, participant):
+    print(f"Subscribed to {track.kind} track from {participant.identity}")
+
+room.on("trackSubscribed", on_track_subscribed)
+
+# Leave the room
+room.leave()
+```
+
+### Benefits of Using LiveKit for Live Streaming in Educational Settings
+
+- **Real-time Interaction**: Engage with students in real-time, making the learning experience more interactive and dynamic.
+- **High-Quality Streaming**: Ensure high-quality video and audio streaming for a seamless classroom experience.
+- **Scalability**: Easily scale your classroom sessions to accommodate a large number of participants.
+- **Flexibility**: Integrate LiveKit with various educational tools and platforms to enhance the overall learning experience.
 
 ---
 
 Happy learning! 🎉
-```
-### Features of This Format:
-1. **Dropdown Table:** Provides a quick glance and direct links to sections.  
-2. **Detailed Sections Below:** Each category is elaborated for more context.  
-3. **Dynamic Navigation:** Easy to update the table or the corresponding sections.  
-4. **Clean Design:** User-friendly, visually structured, and easy to maintain.  
-
-Let me know if you’d like further tweaks! 😊

@@ -11,12 +11,15 @@ import json
 from educhain.models.content_models import LessonPlan
 from educhain.models.content_models import FlashcardSet 
 
+from livekit import Room, LocalParticipant, RemoteParticipant
 
 class ContentEngine:
     def __init__(self, llm_config: Optional[LLMConfig] = None):
         if llm_config is None:
             llm_config = LLMConfig()
         self.llm = self._initialize_llm(llm_config)
+        self.livekit_room = None
+        self.local_participant = None
 
     def _initialize_llm(self, llm_config: LLMConfig):
         if llm_config.custom_model:
@@ -30,6 +33,29 @@ class ContentEngine:
                 base_url=llm_config.base_url,
                 default_headers=llm_config.default_headers
             )
+
+    def initialize_livekit(self, url: str, token: str):
+        self.livekit_room = Room(url=url, token=token)
+        self.local_participant = self.livekit_room.join()
+
+    def publish_video_track(self, video_path: str):
+        if self.local_participant:
+            self.local_participant.publish_video_track(video_path)
+
+    def publish_audio_track(self, audio_path: str):
+        if self.local_participant:
+            self.local_participant.publish_audio_track(audio_path)
+
+    def subscribe_to_remote_tracks(self):
+        if self.livekit_room:
+            def on_track_subscribed(track, publication, participant):
+                print(f"Subscribed to {track.kind} track from {participant.identity}")
+
+            self.livekit_room.on("trackSubscribed", on_track_subscribed)
+
+    def leave_livekit_room(self):
+        if self.livekit_room:
+            self.livekit_room.leave()
 
     # Lesson Plan
     def generate_lesson_plan(

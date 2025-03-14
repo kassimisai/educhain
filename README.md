@@ -1,4 +1,3 @@
-
 <p align="center">
   <img src="https://github.com/VedantDeshmukh2/educhain/blob/main/images/educhain.svg" alt="Educhain Logo" width="800" height="400">
 </p>
@@ -34,7 +33,7 @@ Educhain is a powerful Python package that leverages Generative AI to create eng
 ````python
 from educhain import Educhain
 
-client = Educhain()
+client = Educhain
 
 # Basic MCQ generation
 mcq = client.qna_engine.generate_questions(
@@ -231,6 +230,38 @@ print(question)
 ````
 </details>
 
+<details>
+<summary>📹 Integrate LiveKit SDK for Video and Audio Streaming in Classrooms</summary>
+
+````python
+from livekit import Room, LocalParticipant, RemoteParticipant
+
+# Initialize LiveKit Room
+room = Room(url="your_livekit_server_url", token="your_access_token")
+
+# Join the room
+local_participant = room.join()
+
+# Handle remote participants
+def on_participant_connected(participant: RemoteParticipant):
+    print(f"Participant {participant.identity} connected")
+
+room.on("participantConnected", on_participant_connected)
+
+# Publish local video and audio tracks
+local_participant.publish_video_track("path_to_video_file")
+local_participant.publish_audio_track("path_to_audio_file")
+
+# Subscribe to remote tracks
+def on_track_subscribed(track, publication, participant):
+    print(f"Subscribed to {track.kind} track from {participant.identity}")
+
+room.on("trackSubscribed", on_track_subscribed)
+
+# Leave the room
+room.leave()
+````
+</details>
 
 ## 📈 Workflow
 
